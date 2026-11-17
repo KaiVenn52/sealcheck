@@ -18,7 +18,7 @@ The native chain does not enforce invoice uniqueness. The same intent can be pai
 
 ## Competition readiness
 
-Created from the official create-qorechain-dapp scaffolder. Still required: QoreX setup, a real hybrid testnet transaction and its address/hash, public MIT repository, deployed demo, <=3-minute demonstration video and final submission. Registration is currently in progress.
+Created from the official create-qorechain-dapp scaffolder. Public MIT source: https://github.com/KaiVenn52/sealcheck. Still required: QoreX setup, a real hybrid testnet transaction and its address/hash, deployed demo, <=3-minute demonstration video and final submission. Registration is currently in progress.
 
 ## Evidence and limitations
 
