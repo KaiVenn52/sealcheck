@@ -1,5 +1,7 @@
 # SealCheck
 
+Try the [public review edition](https://kaivenn52.github.io/sealcheck/) to compare a matching simulation with a one-micro-QOR mismatch. The public edition uses sample data. Run the full app with the LCD proxy for live transactions.
+
 Know exactly what you are signing. SealCheck lets a payer and recipient agree to a precise QoreChain payment intent, then check the resulting receipt against that original agreement.
 
 ## User flow
