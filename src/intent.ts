@@ -13,11 +13,16 @@ export function validateIntent(value:unknown):Intent{const v=value as Intent;if(
 export function canonical(value:Intent){const v=validateIntent(value);return JSON.stringify({version:1,chainId:v.chainId,recipient:v.recipient,amountUqor:v.amountUqor,reference:v.reference,expiresAt:v.expiresAt,nonce:v.nonce});}
 export async function digest(v:Intent){const b=await crypto.subtle.digest('SHA-256',new TextEncoder().encode(canonical(v)));return[...new Uint8Array(b)].map(v=>v.toString(16).padStart(2,'0')).join('');}
 export function createIntent(recipient:string,amount:string,reference:string,hours:number):Intent{if(![1,24,72].includes(hours))throw Error('Invalid expiry.');return validateIntent({version:1,chainId:'qorechain-diana',recipient:recipient.trim(),amountUqor:units(amount),reference:reference.trim(),expiresAt:Math.floor(Date.now()/1000)+hours*3600,nonce:[...crypto.getRandomValues(new Uint8Array(16))].map(v=>v.toString(16).padStart(2,'0')).join('')});}
-export async function inspectReceipt(v:Intent,p:any,hash:string,network:string):Promise<Check[]>{validateIntent(v);const r=p?.tx_response,b=p?.tx?.body,m=b?.messages?.length===1?b.messages[0]:null,a=m?.amount;const check=(label:string,pass:boolean,detail:string)=>({label,pass:!!pass,detail});const event=r?.events?.some((e:any)=>e.type==='pqc_hybrid_verify'&&e.attributes?.some((a:any)=>a.key==='status'&&a.value==='verified'));const ext=b?.extension_options?.some((e:any)=>typeof e['@type']==='string'&&e['@type'].endsWith('.PQCHybridSignature'));const time=Date.parse(r?.timestamp??'');return[
+export async function inspectReceipt(v:Intent,p:any,hash:string,network:string):Promise<Check[]>{validateIntent(v);const r=p?.tx_response,b=p?.tx?.body,m=b?.messages?.length===1?b.messages[0]:null,a=m?.amount;const check=(label:string,pass:boolean,detail:string)=>({label,pass:!!pass,detail});const event=r?.events?.some((e:any)=>e.type==='pqc_hybrid_verify'&&e.attributes?.some((a:any)=>a.key==='status'&&a.value==='verified'));const ext=b?.extension_options?.some((e:any)=>typeof e['@type']==='string'&&e['@type'].endsWith('.PQCHybridSignature'));const time=Date.parse(r?.timestamp??'');
+ const observed=a?.[0]?.amount;
+ const singleQor=Array.isArray(a)&&a.length===1&&a[0]?.denom==='uqor';
+ const readableAmount=singleQor&&typeof observed==='string'&&/^(0|[1-9]\d{0,29})$/.test(observed);
+ const amountDetail=readableAmount?'Expected '+displayAmount(v.amountUqor)+' QOR; receipt '+displayAmount(observed)+' QOR':'Expected one QOR amount';
+ return[
  check('Network',network===v.chainId,network||'Not established'),
  check('Transaction',r?.code===0&&r?.txhash?.toUpperCase()===hash.replace(/^0x/,'').toUpperCase()&&/^\d+$/.test(String(r?.height))&&BigInt(r.height)>0n,'Successful transaction and matching hash required'),
  check('Recipient',m?.['@type']==='/cosmos.bank.v1beta1.MsgSend'&&validRecipient(m?.from_address??'')&&m?.to_address===v.recipient,'Single native transfer to the prepared recipient'),
- check('Amount',Array.isArray(a)&&a.length===1&&a[0].denom==='uqor'&&a[0].amount===v.amountUqor,`${displayAmount(v.amountUqor)} QOR expected`),
+ check('Amount',singleQor&&observed===v.amountUqor,amountDetail),
  check('Intent',b?.memo===`sealcheck:v1:${await digest(v)}`,'Memo binds recipient, amount, reference, expiry and nonce'),
  check('Expiry',Number.isFinite(time)&&Math.floor(time/1000)<=v.expiresAt,'Block timestamp must precede expiry'),
  check('Hybrid proof',event&&ext,'Node must report the hybrid extension and verified event')];}

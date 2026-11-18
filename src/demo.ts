@@ -9,7 +9,7 @@ const agreed: Intent = {
   recipient,
   amountUqor: "12500000",
   reference: "DEMO-204",
-  expiresAt: 1900000000,
+  expiresAt: Date.parse('2026-11-18T00:00:00Z') / 1000,
   nonce: "1".repeat(32),
 };
 

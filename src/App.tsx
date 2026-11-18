@@ -389,7 +389,7 @@ export function App() {
               <div>
                 <dt>Status</dt>
                 <dd>
-                  <span className="status">
+                  <span className={example && !matched ? "status fail" : "status"}>
                     {example
                       ? matched
                         ? "Sample matched"
