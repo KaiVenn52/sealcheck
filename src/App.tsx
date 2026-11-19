@@ -1,3 +1,4 @@
+import sampleProof from "./public-proof.json";
 import { useState } from "react";
 import {
   createIntent,
@@ -259,6 +260,12 @@ export function App() {
                     Amount mismatch sample
                   </button>
                 </div>
+                <section className="review-note" aria-label="Public chain evidence">
+                  <h3>Public hybrid-signed transfer</h3>
+                  <p>QoreChain testnet recorded {displayAmount(sampleProof.amountUqor)} QOR at block {sampleProof.height}. Its node reported a hybrid-signature extension and a verified event.</p>
+                  <p>This public example demonstrates what the chain records. SealCheck did not create the transfer and has no payment intent for it.</p>
+                  <a href={`https://api-testnet.qore.host/cosmos/tx/v1beta1/txs/${sampleProof.hash}`} target="_blank" rel="noreferrer">Open the original node receipt</a>
+                </section>
                 {!REVIEW_BUILD && (
                   <>
                     <p>

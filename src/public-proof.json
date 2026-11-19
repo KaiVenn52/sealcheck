@@ -1,0 +1,9 @@
+{
+  "chain": "qorechain-diana",
+  "hash": "40C33F4D6247F222CF06CA250842207593DFF03288BD3E337271DD8B094E2010",
+  "height": "10360440",
+  "timestamp": "2026-11-19T06:20:45Z",
+  "messageType": "/cosmos.bank.v1beta1.MsgSend",
+  "amountUqor": "400000",
+  "extensionType": "/qorechain.pqc.v1.PQCHybridSignature"
+}

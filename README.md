@@ -31,3 +31,7 @@ Run `npm ci`, `npm test`, `npm run build`, then `npm start`. Node 24 is supporte
 ## AI assistance
 
 See AI_USAGE.md. MIT licensed. This prototype has not undergone an independent security audit.
+
+### Reproduce the public chain observation
+
+Run `npm run check:qore` to fetch the original public transfer and chain ID from the official node. It checks the hash, transfer amount, successful result, hybrid-signature extension and node-reported verified event. The public preview points to the original response. This transfer is an independent example of the node's real receipt format. SealCheck still requires its own intent-bound, hybrid-signed transfer for submission.
