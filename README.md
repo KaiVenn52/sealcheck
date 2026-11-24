@@ -35,3 +35,9 @@ See AI_USAGE.md. MIT licensed. This prototype has not undergone an independent s
 ### Reproduce the public chain observation
 
 Run `npm run check:qore` to fetch the original public transfer and chain ID from the official node. It checks the hash, transfer amount, successful result, hybrid-signature extension and node-reported verified event. The public preview points to the original response. This transfer is an independent example of the node's real receipt format. SealCheck still requires its own intent-bound, hybrid-signed transfer for submission.
+
+### Verify a payment without a wallet
+
+Run `npm run check:payment -- <intent.json> <transaction-hash>` with the originally agreed intent. It reads the exact receipt from the official testnet node and runs the same checks as the app. Exit code 2 means the receipt failed a check.
+
+The packaged full build runs with Node.js 24. Unzip it, open a terminal in the extracted directory, and run `node server.mjs`. It binds to `127.0.0.1:5181` by default. A hosted deployment can explicitly set `HOST=0.0.0.0` and `PORT`. The proxy accepts only the two read-only paths used by the app.

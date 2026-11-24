@@ -11,7 +11,8 @@
     "typecheck": "tsc --noEmit",
     "test": "node --test tests/*.test.mjs",
     "start": "node server.mjs",
-    "check:qore": "node scripts/check-qore.mjs"
+    "check:qore": "node scripts/check-qore.mjs",
+    "check:payment": "node scripts/check-payment.mjs"
   },
   "dependencies": {
     "@qorechain/sdk": "^0.14.0",
